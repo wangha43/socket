@@ -69,7 +69,7 @@ while (true) {
 	if (in_array($sock, $read)) {
 		for ($i = 0; $i < $max_clients; $i++) {
 			if ($client_socks[$i] == null) {
-				$client_socks[$i] = socket_accept($sock);
+				$client_socks[$i] = socket_accept($sock); //检查接入
 
 				//display information about the client who is connected
 				if (socket_getpeername($client_socks[$i], $address, $port)) {
@@ -79,7 +79,7 @@ while (true) {
 				//Send Welcome message to client
 				$message = "Welcome to php socket server version 1.0 \n";
 				$message .= "Enter a message and press enter, and i shall reply back \n";
-				socket_write($client_socks[$i], $message);
+				socket_write($client_socks[$i], $message); //发送接入
 				break;
 			}
 		}
@@ -91,8 +91,8 @@ while (true) {
 			$input = socket_read($client_socks[$i], 1024);
 
 			if ($input == null) {
-				//zero length string meaning disconnected, remove and close the socket
-				unset($client_socks[$i]);
+				//null 意味着链接失败
+				unset($client_socks[$i]); //销毁
 				socket_close($client_socks[$i]);
 			}
 
@@ -102,7 +102,7 @@ while (true) {
 
 			echo "Sending output to client \n";
 
-			//send response to client
+			//发送给
 			socket_write($client_socks[$i], $output);
 		}
 	}
